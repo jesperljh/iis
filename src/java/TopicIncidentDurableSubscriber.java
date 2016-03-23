@@ -59,7 +59,7 @@ public class TopicIncidentDurableSubscriber
     String      userName        = null;
     String      password        = null;
 
-    String      topicName       = "topic.sample";
+    String      topicName       = "t.claim";
     String      clientID        = null;
     String      durableName     = "subscriber";
 

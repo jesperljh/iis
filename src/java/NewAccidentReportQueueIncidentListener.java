@@ -50,7 +50,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class QueueIncidentListener {
+public class NewAccidentReportQueueIncidentListener {
 
     public static void main(String[] args) throws IOException {
         //String serverUrl = "192.168.43.228";
@@ -144,7 +144,7 @@ public class QueueIncidentListener {
                     incident.setCrashType(eElement.getElementsByTagName("crashType").item(0).getTextContent());
                     incident.setFormattedAddress(eElement.getElementsByTagName("formattedAddress").item(0).getTextContent());
                     incidentDAO dao = new incidentDAO();
-                    dao.updateIncident(incident);
+                    dao.addIncident(incident);
                 }
             }
         } catch (Exception e) {

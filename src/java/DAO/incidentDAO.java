@@ -6,11 +6,15 @@
 package DAO;
 
 import entity.incident;
+import entity.policy;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import utility.DatabaseConnectionManager;
 
 /**
@@ -143,6 +147,48 @@ public class incidentDAO {
         return incidentList;
     }
     
+    public int retrieveByIncidentId(int incidentId){
+        //Prepare SQL statement
+        String stmt = "SELECT * FROM incident inner join policy on incident.policy_id = policy.policy_id where incident.incident_id = ?;";
+        ArrayList<incident> incidentList = new ArrayList<incident>();
+        incident incident = null;
+        int policyId = 0;
+        try {
+            //Get connection from DatabaseConnectionManager
+            conn = DatabaseConnectionManager.getConnection();
+
+            //Prepare SQL statement
+            pstmt = conn.prepareStatement(stmt);
+
+            //Set parameters into prepared statement
+            pstmt.setInt(1, incidentId);
+
+            //Execute query (retrieve)
+            rs = pstmt.executeQuery();
+
+            //If there is a result
+            while (rs.next()) {
+                policyId = rs.getInt("policy.policy_id");
+            }
+
+            //If result set is not null, close it
+            if (rs != null) {
+                rs.close();
+            }
+            //If prepared statement is not null, close it.
+            if (pstmt != null) {
+                pstmt.close();
+            }
+        } catch (SQLException e) {
+            //Prints out SQLException - good for debugging if sql statement is buggy or constraints that may be causing issues                        
+            System.out.println("Failed to retrieve incident:" + e);
+        } finally {
+            //Close the connection 
+            DatabaseConnectionManager.closeConnection(conn);
+        }
+        return policyId;
+    }
+    
     public void updateIncident(incident incident){
         //Prepare SQL statement
         String stmt = "update incident set sas_location_lat = ?, sas_location_lng = ?, sas_type = ?, sas_formatted_address = ? where sas_registration_plate = ?";
@@ -186,7 +232,9 @@ public class incidentDAO {
     }
     public void addIncident(incident incident){
         //Prepare SQL statement
-        String stmt = "insert into incident ('', '', '', '') values (?, ?, ?, ?)";
+        policyDAO dao = new policyDAO();
+        policy p = dao.retrieveByCarPlate(incident.getRegistrationNumber());
+        String stmt = "insert into incident ('policy_id', 'sas_location_lat', 'sas_location_lng', 'sas_registration_plate', 'sas_owner', 'sas_contact_number', 'sas_type', 'sas_formatted_address', 'sas_date') values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
             //Get connection from DatabaseConnectionManager
             conn = DatabaseConnectionManager.getConnection();
@@ -195,11 +243,16 @@ public class incidentDAO {
             pstmt = conn.prepareStatement(stmt);
 
             //Set parameters into prepared statement
-            pstmt.setString(1, incident.getLat());
-            pstmt.setString(2, incident.getLng());
-            pstmt.setString(3, incident.getCrashType());
-            pstmt.setString(4, incident.getFormattedAddress());
-            pstmt.setString(5, incident.getRegistrationNumber());
+            pstmt.setInt(1, p.getPolicy_id());
+            pstmt.setString(2, incident.getLat());
+            pstmt.setString(3, incident.getLng());
+            pstmt.setString(4, incident.getOtherRegistrationNumber());
+            pstmt.setString(5, p.getDriverName());
+            pstmt.setInt(6, p.getClientContactNumber());
+            pstmt.setString(7, incident.getCrashType());
+            pstmt.setString(8, incident.getFormattedAddress());
+            Date date = new Date();
+            pstmt.setDate(9, (java.sql.Date)date);
             
             //Execute query (retrieve)
             int result = pstmt.executeUpdate();
