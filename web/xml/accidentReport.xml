@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<accidentReport>
+    <registrationPlate>SBC1314Z</registrationPlate>
+        <lat>1.276922</lat>
+        <lng>103.853197</lng>
+    <crashType>Frontal Collision</crashType>
+    <formattedAddress>"122 Geylang East Avenue 1"</formattedAddress>
+</accidentReport>

@@ -1,10 +1,9 @@
 <%-- 
-    Document   : index
-    Created on : Mar 9, 2016, 5:15:04 PM
+    Document   : sasForm
+    Created on : Mar 22, 2016, 11:41:07 PM
     Author     : jesperlim
 --%>
 
-<%@page import="java.util.ArrayList"%>
 <%@page import="entity.incident"%>
 <%@page import="DAO.incidentDAO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -35,6 +34,7 @@
     <link rel="stylesheet" type="text/css" href="./lib/semantic/dist/components/sidebar.css">
     <link rel="stylesheet" type="text/css" href="./lib/semantic/dist/components/transition.css">
     <link rel="stylesheet" type="text/css" href="./lib/semantic/dist/components/accordion.css">
+    <link rel="stylesheet" type="text/css" href="./lib/semantic/dist/components/form.css">
 
 
     <style type="text/css">
@@ -195,136 +195,91 @@
                 <form action="topicIncidentListener">
                     <div class="ui primary button"><input type="submit" class="ui huge primary button" value="Send Topic JMS Message"/><i class="right arrow icon"></i></div>
                 </form>
-
             </div>
-
         </div>
 
-        <div class="ui vertical stripe segment">
-            <div class="ui middle aligned stackable grid container">
-                <div class="row">
-                    <div class="eight wide column" id="foo">
-                        <h3 class="ui header">ProLife helps improve your life</h3>
-                        <p>ProLife Insurance is a well-known Life Insurance company 
-                            that has been serving the financial and protection needs of 
-                            Singaporeans for 85 years. 
-                            However, changing consumer preferences and rapid developments 
-                            in areas of technology like IoT and data analytics are placing an 
-                            increasing pressure on the company to innovate in order to continue growth 
-                            and remain profitable, especially amidst competition from newer, 
-                            tech-savvy startups like, Censio, Canary, Nest, and Ring. 
-                        </p>
-                        <h3 class="ui header">We make your car smart with Automotive Sensors Engineering (ASE) installed</h3>
-                        <p>Yes that's right,Client signs up for ProLife+ Motor Insurance Plan, 
-                            and has his car retrofitted with sensors by Automotive Sensors Engineering
-                            (ASE), a newly acquired partner of ProLife Insurance with market leadership
-                            in the area of IoT for cars, and also advanced analysis of vehicular data. 
-                        </p>
+        <!-- ******************* FORM ****************************** -->
+        <%
+            incidentDAO dao = new incidentDAO();
+            incident incident = dao.retrieve();
+        %>
+        <div class="ui divider"></div>
+        <div class="ui container">
+            <h3>SINGAPORE ACCIDENT STATEMENT</h3>
+            <p>IMPORTANT NOTICE</p>
+            <div class="ui ordered list">
+                <a class="item">Please report CORRECTLY the details of the accident to speed up the claims process.</a>
+                <a class="item">This Form must be completed by the Policyholder and/ or the Authorised Driver.</a>
+                <a class="item">Information provided must be as truthful and accurate as possible. Any willful misrepresentation or withholding of material facts may allow insurance companies to repudiate policy liability.</a>
+                <a class="item">The issue and acceptance of this Form by insurance companies is not an admission of policy liability on the part of the insurance companies.</a>
+                <a class="item">Any false reporting may be referred to the Traffic Policy Department for investigation.</a>
+                <a class="item">This report will be forwarded by the insurers to the GIA Records Management Centre established by the General Insurance Association of Singapore (GIA) for archiving and that copies of this report will for a fee be made available upon application by interested parties.</a>
+                <a class="item">By the lodgement of this report to the insurers, you hereby consent to the archiving of this report at the centre and to copies of the report being made available aforesaid.</a>
+            </div>
+            <form class="ui form segment" id="form">
+                <h4>ACCIDENT STATEMENT</h4>
+                <div class="two fields">
+                    <div class="field">
+                        <label>Date of Accident</label>
+                        <input placeholder="Date of Accident" name="name" type="text" value="<%=incident.getDate()%> readonly">
                     </div>
-                    <div class="six wide right floated column">
-                        <img src="./images/automotive_sensor.jpg" class="ui massive bordered rounded image">
+                    <div class="field">
+                        <label>Location</label>
+                        <input placeholder="Location" name="name" type="text" value="<%=incident.getFormattedAddress()%>">
                     </div>
                 </div>
-                <div class="row">
-                    <div class="center aligned column">
-                        <a class="ui huge button">Check Them Out</a>
+                <h4>DETAILS OF OWN VEHICLE</h4>
+                <div class="two fields">
+                    <div class="field">
+                        <label>Vehicle Registration Number</label>
+                        <input placeholder="Vehicle Registration Number" name="name" type="text" value="<%=incident.getRegistrationNumber()%> readonly">
+                    </div>
+                    <div class="field">
+                        <label>Name of Insurance Company</label>
+                        <input placeholder="Name of Insurance Company" name="name" type="text" value="ProLife" readonly>
                     </div>
                 </div>
-            </div>
-        </div>
-
-
-        <div class="ui vertical stripe quote segment">
-            <div class="ui equal width stackable internally celled grid">
-                <div class="center aligned row">
-                    <div class="column" id="incidentReport">
-                        <h3>Incident Report Overview</h3>
-                        <%
-                            if (request.getParameter("rp") != null) {
-                                String registration_plate = request.getParameter("rp");
-                                incidentDAO dao = new incidentDAO();
-                                ArrayList<incident> incidentList = dao.retrieveAll(registration_plate);
-                                if (incidentList.size() > 0) {
-                                    for (int i = 0; i < incidentList.size(); i++) {
-                                        incident incident = incidentList.get(i);
-                        %>
-
-                        <div class='ui styled fluid accordion'>
-                            <div class='title'>
-                                <i class='dropdown icon'></i>
-                                <%=incident.getDate()%>
-                            </div>
-                            <div class='content'>
-                                <p class='transition visible' style='display: block !important;'>
-                                <div class="ui list">
-                                    <div class="item">
-                                        <i class="marker icon"></i>
-                                        <div class="content">
-                                            <%=incident.getFormattedAddress()%>
-                                        </div>
-                                    </div>
-                                        <a href="http://localhost:8084/iis/pdf.jsp">View my SAS report</a>
-                                </div>
-                                </p>
-                            </div>
-                        </div>
-                        <%
-                                        /*System.out.println("<div class='ui styled fluid accordion'>");
-                                         System.out.println("<div class='title'>");
-                                         System.out.println("<i class='dropdown icon'></i>");
-                                         System.out.println(incidentList.get(i).getDate());
-                                         System.out.println("</div>");
-                                         System.out.println("<div class='content'>");
-                                         System.out.println("<p class='transition visible' style='display: block !important;'>");
-                                         System.out.println("CONTENT************************");
-                                         System.out.println("</p>");
-                                         System.out.println("</div>");
-                                         System.out.println("</div>");*/
-                                    }
-                                }
-                            }
-                        %>
-                        <!--<div class="ui styled fluid accordion">
-                            <div class="title active">
-                                <i class="dropdown icon"></i>
-                                What is a dog?
-                            </div>
-                            <div class="content active">
-                                <p class="transition visible" style="display: block !important;">A dog is a type of domesticated animal. Known for its loyalty and faithfulness, it can be found as a welcome guest in many households across the world.</p>
-                            </div>
-                        </div>-->
-
+                <div class="two fields">
+                    <div class="field">
+                        <label>Name of Driver</label>
+                        <input placeholder="Name of Driver" name="name" type="text" value="<%=incident.getOwner()%>">
                     </div>
-                    <div class="column">
-                        <h3>"Drive Safe & Save"</h3>
-                        <p>
-                            <img src="./images/ubi.jpg" class="ui avatar image"> <b>Usage Base Insurance</b> 
-                        </p>
+                    <div class="field">
+                        <label>Contact Number</label>
+                        <input placeholder="Contact Number" name="name" type="text" value="<%=incident.getContactNumber()%>">
                     </div>
                 </div>
-            </div>
+                <div class="two fields">
+                    <div class="field">
+                        <label>Type of Collision</label>
+                        <input placeholder="Type of Collision" name="name" type="text" value="<%=incident.getCrashType()%>">
+                    </div>
+                    <div class="field">
+                        <label>Weather Conditions</label>
+                        <input placeholder="Weather Conditions" name="name" type="text" value="<%=incident.getWeather()%>">
+                    </div>
+                </div>    
+                <h4>DETAILS OF OTHER VEHICLE(S)/ PROPERTIES</h4>
+                <div class="field">
+                    <label>Vehicle Registration Number</label>
+                    <input placeholder="Vehicle Registration Number" name="name" type="text">
+                </div>
+               <div class="field">
+                    <label>Name of Driver</label>
+                    <input placeholder="Name of Driver" name="name" type="text">
+                </div>
+                <div class="field">
+                    <label>Insurance Company Name</label>
+                    <input placeholder="Insurance Company Name" name="name" type="text">
+                </div>
+                <button class="ui blue submit button" id="submit">Report</button>
+                <div class="ui blue cancel button">Cancel</div>
+                <div class="ui error message"></div>
+            </form>
         </div>
+        <div class="ui divider"></div>
 
-        <div class="ui vertical stripe segment">
-            <div class="ui text container">
-                <h3 class="ui header">Here is something ne w to Grabs Your Attention</h3>
-                <p>In order to differentiate and strengthen their offering for 
-                    the current ProLife Motor Insurance Plan, top management 
-                    believes that early adoption of IoT 
-                    technologies will attract more customers seeking the best 
-                    combination of affordability and service</p>
-                <a class="ui large button">Read More</a>
-                <h4 class="ui horizontal header divider">
-                    <a href="#">Case Studies</a>
-                </h4>
-                <h3 class="ui header">Did We Tell You About Our Services?</h3>
-                <p>The company also wants to introduce Usage Based Insurance (UBI) that 
-                    adjusts premiums based on driving behavior, so that drivers 
-                    can be incentivised to “Drive Safe & Save”. </p>
-                <a class="ui large button">I'm Interested</a>
-            </div>
-        </div>
-
+        <!-- ********************** end of form *************************** -->
 
         <div class="ui inverted vertical footer segment">
             <div class="ui container">
@@ -362,6 +317,7 @@
     <script src="./lib/semantic/dist/components/sidebar.js"></script>
     <script src="./lib/semantic/dist/components/transition.js"></script>
     <script src="./lib/semantic/dist/components/accordion.js"></script>
+    <script src="./lib/semantic/dist/components/form.js"></script>
     <script src="./lib/app.js"></script>
     <script>
         $(document)
@@ -388,5 +344,6 @@
                 })
                 ;
     </script>
+
 </body>
 </html>

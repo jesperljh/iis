@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<report>
+    <carDetail>
+        <registrationPlate>SGZ0008</registrationPlate>
+        <carMake>Nissan Sunny</carMake>
+    </carDetail>
+
+    <crashDetail>
+        <location>
+            <lat>1.276922</lat>
+            <lng>103.853197</lng>
+        </location>
+
+        <preCrashData>
+            <direction>NE</direction>
+            <speed>48.2</speed>
+            <brakePressure>540</brakePressure>
+        </preCrashData>
+
+        <systemStatus>
+            <damageSeverity>
+                <front>80</front>
+                <left>80</left>
+                <right>10</right>
+                <rear>10</rear>
+            </damageSeverity>
+            <airbagTriggered>
+                <front>true</front>
+                <left>true</left>
+                <right>false</right>
+            </airbagTriggered>
+            <fuelLeakageSensor>true</fuelLeakageSensor>
+        </systemStatus>
+
+    </crashDetail>
+</report>
