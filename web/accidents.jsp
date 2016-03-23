@@ -34,11 +34,13 @@
                 incidentDAO dao = new incidentDAO();
                 ArrayList<incident> incidentList = dao.retrieveAll(rp);
                 if (incidentList.size() > 0) {
-                    for (int i = 0; i < incidentList.size(); i++) {
-                        incident incident = incidentList.get(i);
+
         %>
         <div class="container">
             <div class="ui styled fluid accordion">
+                <%                    for (int i = 0; i < incidentList.size(); i++) {
+                        incident incident = incidentList.get(i);
+                %>
                 <div class="title">
                     <i class="dropdown icon"></i>
                     <%=incident.getDate()%>
@@ -97,6 +99,7 @@
                     Don't Report
                 </button>
                 <%
+                        }
                     }
                 %>
             </div>
@@ -104,7 +107,6 @@
     </div>
 
     <%
-                }
             }
         }
     %>
