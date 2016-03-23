@@ -52,6 +52,28 @@ import javax.jms.*;
 import javax.naming.*;
 
 import DAO.*;
+import entity.claim;
+import entity.incident;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Vector;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 public class TopicIncidentDurableSubscriber
 {
@@ -65,7 +87,7 @@ public class TopicIncidentDurableSubscriber
 
     boolean     unsubscribe     = false;
 
-    public TopicIncidentDurableSubscriber(String[] args) {
+    public TopicIncidentDurableSubscriber(String[] args) throws IOException {
 
         parseArgs(args);
 
@@ -122,9 +144,11 @@ public class TopicIncidentDurableSubscriber
                     break;
 
                 System.err.println("\nReceived message: "+message);
-                
-                incidentDAO dao = new incidentDAO();
-                dao.retrieve();
+                String msg = message.toString();
+                FileWriter fw = new FileWriter("web/xml/claim.xml");
+                fw.write(msg);
+                fw.close();
+                readXmlFile();
             }
 
             connection.close();
@@ -135,8 +159,125 @@ public class TopicIncidentDurableSubscriber
             System.exit(0);
         }
     }
+    
+    public void writeXmlFile(String text) {
+        policyDAO dao = new policyDAO();
+        ArrayList<String> policy = dao.retrieve(text);
+        // Write XML File ***********************************
+        try {
 
-    public static void main(String args[])
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+
+            // root elements
+            Document doc = docBuilder.newDocument();
+            Element rootElement = doc.createElement("claim");
+            doc.appendChild(rootElement);
+
+            // staff elements
+            //Element staff = doc.createElement("policy");
+            //rootElement.appendChild(staff);
+
+            // set attribute to staff element
+            //Attr attr = doc.createAttribute("id");
+            //attr.setValue("1");
+            //staff.setAttributeNode(attr);
+
+		// shorten way
+            // staff.setAttribute("id", "1");
+            // firstname elements
+            Element firstname = doc.createElement("accidentId");
+            firstname.appendChild(doc.createTextNode(policy.get(0)));
+            rootElement.appendChild(firstname);
+
+            // lastname elements
+            Element claimType = doc.createElement("claimType");
+            claimType.appendChild(doc.createTextNode(policy.get(1)));
+            rootElement.appendChild(claimType);
+
+            // nickname elements
+            Element claimant = doc.createElement("claimant");
+            claimant.appendChild(doc.createTextNode(policy.get(2)));
+            rootElement.appendChild(claimant);
+
+            // salary elements
+            Element description = doc.createElement("description");
+            description.appendChild(doc.createTextNode(policy.get(3)));
+            rootElement.appendChild(description);
+            
+            // salary elements
+            Element amount = doc.createElement("amount");
+            amount.appendChild(doc.createTextNode(policy.get(3)));
+            rootElement.appendChild(amount);
+
+            // write the content into xml file
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            DOMSource source = new DOMSource(doc);
+            StreamResult result = new StreamResult(new File("web/xml/incident.xml"));
+
+		// Output to console for testing
+            // StreamResult result = new StreamResult(System.out);
+            transformer.transform(source, result);
+
+            System.out.println("File saved!");
+
+        } catch (ParserConfigurationException pce) {
+            pce.printStackTrace();
+        } catch (TransformerException tfe) {
+            tfe.printStackTrace();
+        }
+
+        // end of writing XML File
+    }
+    
+    public void readXmlFile(){
+        try {
+
+            File fXmlFile = new File("web/xml/accidentReport.xml");
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(fXmlFile);
+
+            doc.getDocumentElement().normalize();
+
+            System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
+
+            NodeList nList = doc.getElementsByTagName("accidentReport");
+
+            System.out.println("----------------------------");
+
+            for (int temp = 0; temp < nList.getLength(); temp++) {
+
+                Node nNode = nList.item(temp);
+
+                System.out.println("\nCurrent Element :" + nNode.getNodeName());
+
+                if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+
+                    Element eElement = (Element) nNode;
+
+                    /*System.out.println("Staff id : " + eElement.getAttribute("id"));
+                    System.out.println("First Name : " + eElement.getElementsByTagName("firstname").item(0).getTextContent());
+                    System.out.println("Last Name : " + eElement.getElementsByTagName("lastname").item(0).getTextContent());
+                    System.out.println("Nick Name : " + eElement.getElementsByTagName("nickname").item(0).getTextContent());
+                    System.out.println("Salary : " + eElement.getElementsByTagName("salary").item(0).getTextContent());*/
+                    claim c = new claim();
+                    c.setAccidentID(Integer.parseInt(eElement.getElementsByTagName("accidentId").item(0).getTextContent()));
+                    c.setClaimType(eElement.getElementsByTagName("claimType").item(0).getTextContent());
+                    c.setClaimant(eElement.getElementsByTagName("claimant").item(0).getTextContent());
+                    c.setDescription(eElement.getElementsByTagName("description").item(0).getTextContent());
+                    c.setAmount(Integer.parseInt(eElement.getElementsByTagName("amount").item(0).getTextContent()));
+                    claimDAO dao = new claimDAO();
+                    dao.addClaim(c);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String args[]) throws IOException
     {
         TopicIncidentDurableSubscriber t = new TopicIncidentDurableSubscriber(args);
     }

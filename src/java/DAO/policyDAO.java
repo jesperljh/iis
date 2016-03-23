@@ -5,6 +5,7 @@
  */
 package DAO;
 
+import entity.claim;
 import entity.policy;
 import java.sql.Connection;
 import java.sql.Date;
@@ -195,5 +196,53 @@ public class policyDAO {
             DatabaseConnectionManager.closeConnection(conn);
         }
         return p;
+    }
+    
+    
+    public void updatePolicy(claim c){
+        //Prepare SQL statement
+        incidentDAO dao = new incidentDAO();
+        int policyId = dao.retrieveByIncidentId(c.getAccidentID());
+        policy p = retrieveByPolicyId(policyId);
+        int newAmount = 0;
+        String stmt = "";
+        if(c.getClaimType().equalsIgnoreCase("Medical")){
+            newAmount = p.getMedicalQuota() - c.getAmount();
+            stmt = "update policy set medical_quota = " + newAmount + " where policy_id = " + policyId + ";";
+        }else{
+            newAmount = p.getRepairQuota() - c.getAmount();
+            stmt = "update policy set repair_quota = " + newAmount + " where policy_id = " + policyId + ";";
+        }
+        
+        try {
+            //Get connection from DatabaseConnectionManager
+            conn = DatabaseConnectionManager.getConnection();
+
+            //Prepare SQL statement
+            pstmt = conn.prepareStatement(stmt);
+            
+            //Execute query (retrieve)
+            int result = pstmt.executeUpdate();
+
+            //If there is a result
+            if (result != 0) {
+                System.out.println("updated!!!");
+            }
+
+            //If result set is not null, close it
+            if (rs != null) {
+                rs.close();
+            }
+            //If prepared statement is not null, close it.
+            if (pstmt != null) {
+                pstmt.close();
+            }
+        } catch (SQLException e) {
+            //Prints out SQLException - good for debugging if sql statement is buggy or constraints that may be causing issues                        
+            System.out.println("Failed to retrieve incident:" + e);
+        } finally {
+            //Close the connection 
+            DatabaseConnectionManager.closeConnection(conn);
+        }
     }
 }
