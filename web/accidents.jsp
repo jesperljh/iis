@@ -104,18 +104,17 @@
                 %>
             </div>
         </div>
-    </div>
 
-    <%
+        <%
+                }
             }
-        }
-    %>
+        %>
 
 
-    <script>
-        $('.ui.accordion').accordion()
-    </script>
+        <script>
+            $('.ui.accordion').accordion()
+        </script>
 
 
-</body>
+    </body>
 </html>
