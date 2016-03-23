@@ -10,6 +10,7 @@ package entity;
  * @author jesperlim
  */
 public class incident {
+    int incidentId;
     String date;
     String location;
     String registrationNumber;
@@ -51,9 +52,18 @@ public class incident {
     public void setLng(String lng) {
         this.lng = lng;
     }
+
+    public int getIncidentId() {
+        return incidentId;
+    }
+
+    public void setIncidentId(int incidentId) {
+        this.incidentId = incidentId;
+    }
     
 
-    public incident(String date, String location, String registrationNumber, String owner, String contactNumber, String crashType, String weather, boolean isReported, String otherRegistrationNumber, String otherDriver, String otherCompany) {
+    public incident(int incidentId, String date, String location, String registrationNumber, String owner, String contactNumber, String crashType, String weather, boolean isReported, String otherRegistrationNumber, String otherDriver, String otherCompany) {
+        this.incidentId = incidentId;
         this.date = date;
         this.location = location;
         this.registrationNumber = registrationNumber;

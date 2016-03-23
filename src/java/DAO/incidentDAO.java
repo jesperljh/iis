@@ -58,6 +58,7 @@ public class incidentDAO {
                 System.out.println("get into database!!!");
                 //System.out.println(rs.getString(2));
                 //Set record results into variable
+                int incidentId = rs.getInt("incident_id");
                 String date = rs.getString("sas_date"); 
                 String location = rs.getString("sas_formatted_address");
                 String registrationNumber = rs.getString("sas_registration_plate");
@@ -69,7 +70,7 @@ public class incidentDAO {
                 String otherRegistrationNumber = rs.getString("other_registration_plate");
                 String otherDriver = rs.getString("other_driver");
                 String otherCompany = rs.getString("other_company");
-                incident = new incident(date, location, registrationNumber, owner, contactNumber, crashType, weather, isReported, otherRegistrationNumber, otherDriver, otherCompany);
+                incident = new incident(incidentId, date, location, registrationNumber, owner, contactNumber, crashType, weather, isReported, otherRegistrationNumber, otherDriver, otherCompany);
                 //Initiate Incident object based on results from the database
             }
 
@@ -113,6 +114,7 @@ public class incidentDAO {
                 System.out.println("get into database!!!");
                 //System.out.println(rs.getString(2));
                 //Set record results into variable
+                int incidentId = rs.getInt("incident_id");
                 String date = rs.getString("sas_date"); 
                 String location = rs.getString("sas_formatted_address");
                 String registrationNumber = rs.getString("sas_registration_plate");
@@ -124,7 +126,7 @@ public class incidentDAO {
                 String otherRegistrationNumber = rs.getString("other_registration_plate");
                 String otherDriver = rs.getString("other_driver");
                 String otherCompany = rs.getString("other_company");
-                incident = new incident(date, location, registrationNumber, owner, contactNumber, crashType, weather, isReported, otherRegistrationNumber, otherDriver, otherCompany);
+                incident = new incident(incidentId, date, location, registrationNumber, owner, contactNumber, crashType, weather, isReported, otherRegistrationNumber, otherDriver, otherCompany);
                 incidentList.add(incident);
                 //Initiate Incident object based on results from the database
             }
