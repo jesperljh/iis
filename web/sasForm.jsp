@@ -35,6 +35,7 @@
     <link rel="stylesheet" type="text/css" href="./lib/semantic/dist/components/transition.css">
     <link rel="stylesheet" type="text/css" href="./lib/semantic/dist/components/accordion.css">
     <link rel="stylesheet" type="text/css" href="./lib/semantic/dist/components/form.css">
+    <link rel="stylesheet" type="text/css" href="./lib/semantic/dist/components/checkbox.css">
 
 
     <style type="text/css">
@@ -264,7 +265,7 @@
                     <label>Vehicle Registration Number</label>
                     <input placeholder="Vehicle Registration Number" name="name" type="text">
                 </div>
-               <div class="field">
+                <div class="field">
                     <label>Name of Driver</label>
                     <input placeholder="Name of Driver" name="name" type="text">
                 </div>
@@ -272,7 +273,13 @@
                     <label>Insurance Company Name</label>
                     <input placeholder="Insurance Company Name" name="name" type="text">
                 </div>
-                <button class="ui blue submit button" id="submit">Report</button>
+                <div class="field">
+                    <div class="ui toggle checkbox">
+                        <label>Report to police</label>
+                        <input type="checkbox" tabindex="0" class="hidden">
+                    </div>
+                </div>
+                <button class="ui blue submit button" id="submit">Submit SAS Report</button>
                 <div class="ui blue cancel button">Cancel</div>
                 <div class="ui error message"></div>
             </form>
@@ -318,6 +325,7 @@
     <script src="./lib/semantic/dist/components/transition.js"></script>
     <script src="./lib/semantic/dist/components/accordion.js"></script>
     <script src="./lib/semantic/dist/components/form.js"></script>
+    <script src="./lib/semantic/dist/components/checkbox.js"></script>
     <script src="./lib/app.js"></script>
     <script>
         $(document)
