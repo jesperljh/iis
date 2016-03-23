@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 
+semantic.button = {};
 
 $(document).ready(function () {
     $('.ui.accordion').accordion();
@@ -19,6 +20,45 @@ $(document).ready(function () {
     // now scroll to element with that id
     $('html, body').animate({scrollTop: $(hash).offset().top});
 });
+
+
+// ready event
+semantic.button.ready = function() {
+
+  // selector cache
+  var
+    $buttons = $('.ui.buttons .button'),
+    $toggle  = $('.main .ui.toggle.button'),
+    $button  = $('.ui.button').not($buttons).not($toggle),
+    // alias
+    handler = {
+
+      activate: function() {
+        $(this)
+          .addClass('active')
+          .siblings()
+          .removeClass('active')
+        ;
+      }
+
+    }
+  ;
+
+  $buttons
+    .on('click', handler.activate)
+  ;
+
+
+  $toggle
+    .state({
+      text: {
+        inactive : 'Vote',
+        active   : 'Voted'
+      }
+    })
+  ;
+
+};
 
 $('.ui.form').form({
     fields: {
