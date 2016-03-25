@@ -36,7 +36,9 @@ public class incident {
     public void setFormattedAddress(String formattedAddress) {
         this.formattedAddress = formattedAddress;
     }
-
+    
+  
+    
     public String getLat() {
         return lat;
     }
@@ -62,10 +64,10 @@ public class incident {
     }
     
 
-    public incident(int incidentId, String date, String location, String registrationNumber, String owner, String contactNumber, String crashType, String weather, boolean isReported, String otherRegistrationNumber, String otherDriver, String otherCompany) {
+    public incident(int incidentId, String date, String formattedAddress, String registrationNumber, String owner, String contactNumber, String crashType, String weather, boolean isReported, String otherRegistrationNumber, String otherDriver, String otherCompany) {
         this.incidentId = incidentId;
         this.date = date;
-        this.location = location;
+        this.formattedAddress = formattedAddress;
         this.registrationNumber = registrationNumber;
         this.owner = owner;
         this.contactNumber = contactNumber;

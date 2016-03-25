@@ -193,7 +193,8 @@ public class incidentDAO {
     
     public void updateIncident(incident incident){
         //Prepare SQL statement
-        String stmt = "update incident set sas_location_lat = ?, sas_location_lng = ?, sas_type = ?, sas_formatted_address = ? where sas_registration_plate = ?";
+        String stmt = "UPDATE incident SET sas_owner = ?, sas_formatted_address = ?, sas_type = ?, sas_weather = ?, other_company = ?, sas_isReported = ?, other_driver = ?, other_registration_plate =? WHERE incident_id = ?";
+        // ("UPDATE items SET name = ?, category = ?, price = ?, quantity = ? WHERE id = ?");
         try {
             //Get connection from DatabaseConnectionManager
             conn = DatabaseConnectionManager.getConnection();
@@ -202,11 +203,20 @@ public class incidentDAO {
             pstmt = conn.prepareStatement(stmt);
 
             //Set parameters into prepared statement
-            pstmt.setString(1, incident.getLat());
-            pstmt.setString(2, incident.getLng());
+              
+            pstmt.setString(1, incident.getOwner());
+            pstmt.setString(2, incident.getFormattedAddress());
             pstmt.setString(3, incident.getCrashType());
-            pstmt.setString(4, incident.getFormattedAddress());
-            pstmt.setString(5, incident.getRegistrationNumber());
+            pstmt.setString(4, incident.getWeather());
+            pstmt.setString(5, incident.getOtherCompany());
+            pstmt.setBoolean(6, incident.getIsReported());
+            pstmt.setString(7, incident.getOtherDriver());
+            pstmt.setString(8, incident.getOtherRegistrationNumber());
+            pstmt.setInt(9, incident.getIncidentId());
+           // pstmt.setString(7, incident.getContactNumber());
+            
+            
+            
             
             //Execute query (retrieve)
             int result = pstmt.executeUpdate();

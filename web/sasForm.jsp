@@ -217,27 +217,27 @@
                 <a class="item">This report will be forwarded by the insurers to the GIA Records Management Centre established by the General Insurance Association of Singapore (GIA) for archiving and that copies of this report will for a fee be made available upon application by interested parties.</a>
                 <a class="item">By the lodgement of this report to the insurers, you hereby consent to the archiving of this report at the centre and to copies of the report being made available aforesaid.</a>
             </div>
-            <form class="ui form segment" id="form">
+            <form class="ui form segment" id="form" action="UpdateServlet" method="POST" >
                 <h4>ACCIDENT STATEMENT</h4>
                 <div class="two fields">
                     <div class="field">
                         <label>Date of Accident</label>
-                        <input placeholder="Date of Accident" name="name" type="text" value="<%=incident.getDate()%> readonly">
+                        <input placeholder="Date of Accident" name="date" type="text" value="<%=incident.getDate()%>" readonly>
                     </div>
                     <div class="field">
                         <label>Location</label>
-                        <input placeholder="Location" name="name" type="text" value="<%=incident.getFormattedAddress()%>">
+                        <input placeholder="Location" name="location" type="text" value="<%=incident.getFormattedAddress()%>" readonly>
                     </div>
                 </div>
                 <h4>DETAILS OF OWN VEHICLE</h4>
                 <div class="two fields">
                     <div class="field">
                         <label>Vehicle Registration Number</label>
-                        <input placeholder="Vehicle Registration Number" name="name" type="text" value="<%=incident.getRegistrationNumber()%> readonly">
+                        <input placeholder="Vehicle Registration Number" name="registration" type="text" value="<%=incident.getRegistrationNumber()%>" readonly>
                     </div>
                     <div class="field">
                         <label>Name of Insurance Company</label>
-                        <input placeholder="Name of Insurance Company" name="name" type="text" value="ProLife" readonly>
+                        <input placeholder="Name of Insurance Company" name="company" type="text" value="ProLife" readonly>
                     </div>
                 </div>
                 <div class="two fields">
@@ -247,38 +247,37 @@
                     </div>
                     <div class="field">
                         <label>Contact Number</label>
-                        <input placeholder="Contact Number" name="name" type="text" value="<%=incident.getContactNumber()%>">
+                        <input placeholder="Contact Number" name="number" type="text" value="<%=incident.getContactNumber()%>">
                     </div>
                 </div>
                 <div class="two fields">
                     <div class="field">
                         <label>Type of Collision</label>
-                        <input placeholder="Type of Collision" name="name" type="text" value="<%=incident.getCrashType()%>">
+                        <input placeholder="Type of Collision" name="type" type="text" value="<%=incident.getCrashType()%>">
                     </div>
                     <div class="field">
                         <label>Weather Conditions</label>
-                        <input placeholder="Weather Conditions" name="name" type="text" value="<%=incident.getWeather()%>">
+                        <input placeholder="Weather Conditions" name="weather" type="text" value="<%=incident.getWeather()%>">
                     </div>
                 </div>    
                 <h4>DETAILS OF OTHER VEHICLE(S)/ PROPERTIES</h4>
                 <div class="field">
                     <label>Vehicle Registration Number</label>
-                    <input placeholder="Vehicle Registration Number" name="name" type="text">
+                    <input placeholder="Vehicle Registration Number" name="otherRegistration" type="text">
                 </div>
                 <div class="field">
                     <label>Name of Driver</label>
-                    <input placeholder="Name of Driver" name="name" type="text">
+                    <input placeholder="Name of Driver" name="otherName" type="text">
                 </div>
                 <div class="field">
                     <label>Insurance Company Name</label>
-                    <input placeholder="Insurance Company Name" name="name" type="text">
+                    <input placeholder="Insurance Company Name" name="otherCompany" type="text">
                 </div>
-                <div class="field">
-                    <div class="ui toggle checkbox">
-                        <label>Report to police</label>
-                        <input type="checkbox" tabindex="0" class="hidden">
-                    </div>
-                </div>
+                <b>Is the incident reported to the police</b> <br>
+                    <input type="radio" name="isReported" value="true" /> Yes
+                    <input type="radio" name="isReported" value="false" /> No
+                    <br><br>
+              
                 <button class="ui blue submit button" id="submit">Submit SAS Report</button>
                 <div class="ui blue cancel button">Cancel</div>
                 <div class="ui error message"></div>
