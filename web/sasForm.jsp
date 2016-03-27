@@ -202,7 +202,8 @@
         <!-- ******************* FORM ****************************** -->
         <%
             incidentDAO dao = new incidentDAO();
-            incident incident = dao.retrieve();
+            String cp = request.getParameter("cp");
+            incident incident = dao.retrieve(cp);
         %>
         <div class="ui divider"></div>
         <div class="ui container">
@@ -221,6 +222,7 @@
                 <h4>ACCIDENT STATEMENT</h4>
                 <div class="two fields">
                     <div class="field">
+                        <input type="hidden" value="<%=incident.getIncidentId()%>" name="incidentId"/>
                         <label>Date of Accident</label>
                         <input placeholder="Date of Accident" name="date" type="text" value="<%=incident.getDate()%>" readonly>
                     </div>

@@ -36,7 +36,7 @@ public class incidentDAO {
      */
     private ResultSet rs;
     
-    public incident retrieve(){
+    public incident retrieve(String cp){ // ******* should we sort by incident_id as descending also? to get the last inciednt object ***********
         //Prepare SQL statement
         String stmt = "select * from incident inner join policy on incident.policy_id = policy.policy_id where policy.car_plate_number = ?;";
         incident incident = null;
@@ -48,7 +48,7 @@ public class incidentDAO {
             pstmt = conn.prepareStatement(stmt);
 
             //Set parameters into prepared statement
-            pstmt.setString(1, "SBC1314Z");
+            pstmt.setString(1, cp);
 
             //Execute query (retrieve)
             rs = pstmt.executeQuery();

@@ -42,15 +42,13 @@ public class UpdateServlet extends HttpServlet {
         String location = request.getParameter("location");
         String registration = request.getParameter("registration");
         
-        policyDAO pdao = new policyDAO();
-        policy p = pdao.retrieveByCarPlate(registration);
-                int incidentId = p.getPolicy_id();
+        int incidentId = Integer.parseInt(request.getParameter("incidentId"));
         String company = request.getParameter("company");
         String name = request.getParameter("name");
         String number = request.getParameter("number");
         String type = request.getParameter("type");
         String weather = request.getParameter("weather");
-        String isReported = "true";
+        String isReported = request.getParameter("isReported");
         boolean reported = false;
         if (isReported.equals("true")){
             reported = true;
