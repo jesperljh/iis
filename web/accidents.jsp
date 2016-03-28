@@ -43,7 +43,7 @@
                 %>
                 <div class="title">
                     <i class="dropdown icon"></i>
-                    <%=incident.getDate()%>
+                    Detected on <%=incident.getDate()%>
                     <%
                         if (incident.getIsReported()) {
                     %>
@@ -87,19 +87,24 @@
                     <%
                         }
                     %>
+                    <%
+                        if (!incident.getIsReported()) {
+                    %>
+                    <a href="sasForm.jsp?id=<%=incident.getIncidentId()%>&#sas">
+                        <button class="ui blue compact labeled icon button">
+                            <i class="lightning icon"></i>
+                            Report Accident
+
+                        </button>
+                    </a>
+                    <button class="ui orange compact button">
+                        Don't Report
+                    </button>
+                    <%
+                        }
+                    %>
                 </div>
                 <%
-                    if (!incident.getIsReported()) {
-                %>
-                <button class="ui blue compact labeled icon button">
-                    <i class="lightning icon"></i>
-                    Report Accident
-                </button>
-                <button class="ui orange compact button">
-                    Don't Report
-                </button>
-                <%
-                        }
                     }
                 %>
             </div>

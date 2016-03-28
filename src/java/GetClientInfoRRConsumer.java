@@ -63,12 +63,12 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-public class tibjmsMsgRRConsumer
+public class GetClientInfoRRConsumer
         implements ExceptionListener {
     /*-----------------------------------------------------------------------
      * Parameters
      *----------------------------------------------------------------------*/
-
+    // Accident report (first process flow)
     //String serverUrl = "192.168.43.228";
     String serverUrl = "10.124.131.128";
     String userName = null;
@@ -85,7 +85,7 @@ public class tibjmsMsgRRConsumer
     MessageConsumer msgConsumer = null;
     Destination destination = null;
 
-    public tibjmsMsgRRConsumer(String[] args) {
+    public GetClientInfoRRConsumer(String[] args) {
         parseArgs(args);
 
         /* print parameters */
@@ -241,7 +241,7 @@ public class tibjmsMsgRRConsumer
         //param[1] = "10.124.131.128";
         param[0] = "-queue";
         param[1] = "q.getClientInfo";
-        new tibjmsMsgRRConsumer(param);
+        new GetClientInfoRRConsumer(param);
     }
 
     // Handle the message when received.

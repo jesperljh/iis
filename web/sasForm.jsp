@@ -202,11 +202,11 @@
         <!-- ******************* FORM ****************************** -->
         <%
             incidentDAO dao = new incidentDAO();
-            String cp = request.getParameter("cp");
-            incident incident = dao.retrieve(cp);
+            int id = Integer.parseInt(request.getParameter("id"));
+            incident incident = dao.retrieve(id);
         %>
         <div class="ui divider"></div>
-        <div class="ui container">
+        <div class="ui container" id="sas">
             <h3>SINGAPORE ACCIDENT STATEMENT</h3>
             <p>IMPORTANT NOTICE</p>
             <div class="ui ordered list">
@@ -276,12 +276,12 @@
                     <input placeholder="Insurance Company Name" name="otherCompany" type="text">
                 </div>
                 <b>Is the incident reported to the police</b> <br>
-                    <input type="radio" name="isReported" value="true" /> Yes
-                    <input type="radio" name="isReported" value="false" /> No
-                    <br><br>
-              
+                <input style="margin-top: 10px" type="radio" name="isReported" value="true" /> Yes
+                <input style="margin-left: 30px; margin-bottom: 10px" type="radio" name="isReported" value="false" /> No
+                <br><br>
+                <input type="hidden" value="<%=incident.getRegistrationNumber()%>" name="registrationNumber"/>
                 <button class="ui blue submit button" id="submit">Submit SAS Report</button>
-                <div class="ui blue cancel button">Cancel</div>
+                <a href="accidents.jsp?rp=<%=incident.getRegistrationNumber()%>"><div class="ui blue cancel button">Cancel</div></a>
                 <div class="ui error message"></div>
             </form>
         </div>

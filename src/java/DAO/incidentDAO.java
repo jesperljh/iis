@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -36,9 +37,9 @@ public class incidentDAO {
      */
     private ResultSet rs;
     
-    public incident retrieve(String cp){ // ******* should we sort by incident_id as descending also? to get the last inciednt object ***********
+    public incident retrieve(int id){ // ******* should we sort by incident_id as descending also? to get the last inciednt object ***********
         //Prepare SQL statement
-        String stmt = "select * from incident inner join policy on incident.policy_id = policy.policy_id where policy.car_plate_number = ?;";
+        String stmt = "select * from incident where incident_id = ?;";
         incident incident = null;
         try {
             //Get connection from DatabaseConnectionManager
@@ -48,7 +49,7 @@ public class incidentDAO {
             pstmt = conn.prepareStatement(stmt);
 
             //Set parameters into prepared statement
-            pstmt.setString(1, cp);
+            pstmt.setInt(1, id);
 
             //Execute query (retrieve)
             rs = pstmt.executeQuery();
@@ -66,11 +67,12 @@ public class incidentDAO {
                 String contactNumber = rs.getString("sas_contact_number");
                 String crashType = rs.getString("sas_type");
                 String weather = rs.getString("sas_weather");
-                boolean isReported = rs.getBoolean("sas_isReported");
+                boolean isReported = rs.getBoolean("is_reported");
                 String otherRegistrationNumber = rs.getString("other_registration_plate");
                 String otherDriver = rs.getString("other_driver");
                 String otherCompany = rs.getString("other_company");
-                incident = new incident(incidentId, date, location, registrationNumber, owner, contactNumber, crashType, weather, isReported, otherRegistrationNumber, otherDriver, otherCompany);
+                boolean reportedToPolice = rs.getBoolean("sas_reported_to_police");
+                incident = new incident(incidentId, date, location, registrationNumber, owner, contactNumber, crashType, weather, isReported, otherRegistrationNumber, otherDriver, otherCompany, reportedToPolice);
                 //Initiate Incident object based on results from the database
             }
 
@@ -122,11 +124,12 @@ public class incidentDAO {
                 String contactNumber = rs.getString("sas_contact_number");
                 String crashType = rs.getString("sas_type");
                 String weather = rs.getString("sas_weather");
-                boolean isReported = rs.getBoolean("sas_isReported");
+                boolean isReported = rs.getBoolean("is_reported");
                 String otherRegistrationNumber = rs.getString("other_registration_plate");
                 String otherDriver = rs.getString("other_driver");
                 String otherCompany = rs.getString("other_company");
-                incident = new incident(incidentId, date, location, registrationNumber, owner, contactNumber, crashType, weather, isReported, otherRegistrationNumber, otherDriver, otherCompany);
+                boolean reportedToPolice = rs.getBoolean(("sas_reported_to_police"));
+                incident = new incident(incidentId, date, location, registrationNumber, owner, contactNumber, crashType, weather, isReported, otherRegistrationNumber, otherDriver, otherCompany, reportedToPolice);
                 incidentList.add(incident);
                 //Initiate Incident object based on results from the database
             }
@@ -193,7 +196,7 @@ public class incidentDAO {
     
     public void updateIncident(incident incident){
         //Prepare SQL statement
-        String stmt = "UPDATE incident SET sas_owner = ?, sas_formatted_address = ?, sas_type = ?, sas_weather = ?, other_company = ?, sas_isReported = ?, other_driver = ?, other_registration_plate =? WHERE incident_id = ?";
+        String stmt = "UPDATE incident SET sas_owner = ?, sas_formatted_address = ?, sas_type = ?, sas_weather = ?, sas_reported_to_police = ?, other_company = ?, is_reported = ?, other_driver = ?, other_registration_plate =? WHERE incident_id = ?";
         // ("UPDATE items SET name = ?, category = ?, price = ?, quantity = ? WHERE id = ?");
         try {
             //Get connection from DatabaseConnectionManager
@@ -208,11 +211,12 @@ public class incidentDAO {
             pstmt.setString(2, incident.getFormattedAddress());
             pstmt.setString(3, incident.getCrashType());
             pstmt.setString(4, incident.getWeather());
-            pstmt.setString(5, incident.getOtherCompany());
-            pstmt.setBoolean(6, incident.getIsReported());
-            pstmt.setString(7, incident.getOtherDriver());
-            pstmt.setString(8, incident.getOtherRegistrationNumber());
-            pstmt.setInt(9, incident.getIncidentId());
+            pstmt.setBoolean(5, incident.getIsReported());
+            pstmt.setString(6, incident.getOtherCompany());
+            pstmt.setBoolean(7, true);
+            pstmt.setString(8, incident.getOtherDriver());
+            pstmt.setString(9, incident.getOtherRegistrationNumber());
+            pstmt.setInt(10, incident.getIncidentId());
            // pstmt.setString(7, incident.getContactNumber());
             
             
@@ -242,11 +246,11 @@ public class incidentDAO {
             DatabaseConnectionManager.closeConnection(conn);
         }
     }
-    public void addIncident(incident incident){
+    public void addIncident(incident incident) throws ParseException{
         //Prepare SQL statement
         policyDAO dao = new policyDAO();
         policy p = dao.retrieveByCarPlate(incident.getRegistrationNumber());
-        String stmt = "insert into incident ('policy_id', 'sas_location_lat', 'sas_location_lng', 'sas_registration_plate', 'sas_owner', 'sas_contact_number', 'sas_type', 'sas_formatted_address', 'sas_date') values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String stmt = "insert into incident (policy_id, sas_location_lat, sas_location_lng, sas_registration_plate, sas_owner, sas_contact_number, sas_type, sas_formatted_address, sas_date, is_reported) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
         try {
             //Get connection from DatabaseConnectionManager
             conn = DatabaseConnectionManager.getConnection();
@@ -255,16 +259,32 @@ public class incidentDAO {
             pstmt = conn.prepareStatement(stmt);
 
             //Set parameters into prepared statement
+            System.out.println(p.getPolicy_id());
             pstmt.setInt(1, p.getPolicy_id());
+            System.out.println(incident.getLat());
             pstmt.setString(2, incident.getLat());
+            System.out.println(incident.getLng());
             pstmt.setString(3, incident.getLng());
-            pstmt.setString(4, incident.getOtherRegistrationNumber());
+            System.out.println(incident.getRegistrationNumber());
+            pstmt.setString(4, incident.getRegistrationNumber());
+            System.out.println(p.getDriverName());
             pstmt.setString(5, p.getDriverName());
+            System.out.println(p.getClientContactNumber());
             pstmt.setInt(6, p.getClientContactNumber());
+            System.out.println(incident.getCrashType());
             pstmt.setString(7, incident.getCrashType());
+            System.out.println(incident.getFormattedAddress());
             pstmt.setString(8, incident.getFormattedAddress());
             Date date = new Date();
-            pstmt.setDate(9, (java.sql.Date)date);
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            String d = df.format(date);
+            Date dateFormat = new SimpleDateFormat("yyy-MM-dd").parse(d);
+            System.out.println(dateFormat.getTime());
+            java.sql.Date sqlDate = new java.sql.Date(dateFormat.getTime());
+            System.out.println(sqlDate);
+            
+            pstmt.setDate(9, sqlDate);
+            pstmt.setBoolean(10, false);
             
             //Execute query (retrieve)
             int result = pstmt.executeUpdate();

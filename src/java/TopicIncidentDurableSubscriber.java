@@ -77,13 +77,13 @@ import org.w3c.dom.NodeList;
 
 public class TopicIncidentDurableSubscriber
 {
-    String      serverUrl       = null;
+    String      serverUrl       = "10.124.131.128";
     String      userName        = null;
     String      password        = null;
 
     String      topicName       = "t.claim";
     String      clientID        = null;
-    String      durableName     = "subscriber";
+    String      durableName     = "subscriberClaim";
 
     boolean     unsubscribe     = false;
 
@@ -142,9 +142,9 @@ public class TopicIncidentDurableSubscriber
                 javax.jms.Message message = subscriber.receive();
                 if (message == null)
                     break;
-
-                System.err.println("\nReceived message: "+message);
-                String msg = message.toString();
+                TextMessage text = (TextMessage) message;
+                System.err.println("\nReceived message: " + message);
+                String msg = text.getText();
                 FileWriter fw = new FileWriter("web/xml/claim.xml");
                 fw.write(msg);
                 fw.close();
@@ -214,7 +214,7 @@ public class TopicIncidentDurableSubscriber
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(new File("web/xml/incident.xml"));
+            StreamResult result = new StreamResult(new File("web/xml/claim.xml"));
 
 		// Output to console for testing
             // StreamResult result = new StreamResult(System.out);
@@ -234,7 +234,7 @@ public class TopicIncidentDurableSubscriber
     public void readXmlFile(){
         try {
 
-            File fXmlFile = new File("web/xml/accidentReport.xml");
+            File fXmlFile = new File("web/xml/claim.xml");
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(fXmlFile);
@@ -243,7 +243,7 @@ public class TopicIncidentDurableSubscriber
 
             System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
 
-            NodeList nList = doc.getElementsByTagName("accidentReport");
+            NodeList nList = doc.getElementsByTagName("claim");
 
             System.out.println("----------------------------");
 
@@ -257,11 +257,12 @@ public class TopicIncidentDurableSubscriber
 
                     Element eElement = (Element) nNode;
 
-                    /*System.out.println("Staff id : " + eElement.getAttribute("id"));
-                    System.out.println("First Name : " + eElement.getElementsByTagName("firstname").item(0).getTextContent());
-                    System.out.println("Last Name : " + eElement.getElementsByTagName("lastname").item(0).getTextContent());
-                    System.out.println("Nick Name : " + eElement.getElementsByTagName("nickname").item(0).getTextContent());
-                    System.out.println("Salary : " + eElement.getElementsByTagName("salary").item(0).getTextContent());*/
+                    System.out.println("incident id : " + eElement.getElementsByTagName("accidentId").item(0).getTextContent());
+                    System.out.println("claim type : " + eElement.getElementsByTagName("claimType").item(0).getTextContent());
+                    System.out.println("claimant : " + eElement.getElementsByTagName("claimant").item(0).getTextContent());
+                    System.out.println("description : " + eElement.getElementsByTagName("description").item(0).getTextContent());
+                    System.out.println("amount : " + eElement.getElementsByTagName("amount").item(0).getTextContent());
+                    
                     claim c = new claim();
                     c.setAccidentID(Integer.parseInt(eElement.getElementsByTagName("accidentId").item(0).getTextContent()));
                     c.setClaimType(eElement.getElementsByTagName("claimType").item(0).getTextContent());

@@ -55,6 +55,8 @@ public class NewAccidentReportQueueIncidentListener {
     public static void main(String[] args) throws IOException {
         //String serverUrl = "192.168.43.228";
         //String serverUrl = "tcp://localhost:7222";
+        
+        // update new accident report (first process flow)
         String serverUrl = "10.124.131.128";
         
         String userName = "";
@@ -132,11 +134,12 @@ public class NewAccidentReportQueueIncidentListener {
 
                     Element eElement = (Element) nNode;
 
-                    /*System.out.println("Staff id : " + eElement.getAttribute("id"));
-                    System.out.println("First Name : " + eElement.getElementsByTagName("firstname").item(0).getTextContent());
-                    System.out.println("Last Name : " + eElement.getElementsByTagName("lastname").item(0).getTextContent());
-                    System.out.println("Nick Name : " + eElement.getElementsByTagName("nickname").item(0).getTextContent());
-                    System.out.println("Salary : " + eElement.getElementsByTagName("salary").item(0).getTextContent());*/
+                    System.out.println("First Name : " + eElement.getElementsByTagName("registrationPlate").item(0).getTextContent());
+                    System.out.println("Last Name : " + eElement.getElementsByTagName("lat").item(0).getTextContent());
+                    System.out.println("Nick Name : " + eElement.getElementsByTagName("lng").item(0).getTextContent());
+                    System.out.println("Salary : " + eElement.getElementsByTagName("crashType").item(0).getTextContent());
+                    System.out.println("Salary : " + eElement.getElementsByTagName("formattedAddress").item(0).getTextContent());
+                    
                     incident incident = new incident();
                     incident.setRegistrationNumber(eElement.getElementsByTagName("registrationPlate").item(0).getTextContent());
                     incident.setLat(eElement.getElementsByTagName("lat").item(0).getTextContent());

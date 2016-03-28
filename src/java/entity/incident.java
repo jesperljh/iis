@@ -25,6 +25,7 @@ public class incident {
     String lat;
     String lng;
     String formattedAddress;
+    boolean reportedToPolice;
 
     public incident(){
         
@@ -64,7 +65,7 @@ public class incident {
     }
     
 
-    public incident(int incidentId, String date, String formattedAddress, String registrationNumber, String owner, String contactNumber, String crashType, String weather, boolean isReported, String otherRegistrationNumber, String otherDriver, String otherCompany) {
+    public incident(int incidentId, String date, String formattedAddress, String registrationNumber, String owner, String contactNumber, String crashType, String weather, boolean isReported, String otherRegistrationNumber, String otherDriver, String otherCompany, boolean reportedToPolice) {
         this.incidentId = incidentId;
         this.date = date;
         this.formattedAddress = formattedAddress;
@@ -77,6 +78,15 @@ public class incident {
         this.otherRegistrationNumber = otherRegistrationNumber;
         this.otherDriver = otherDriver;
         this.otherCompany = otherCompany;
+        this.reportedToPolice = reportedToPolice;
+    }
+
+    public boolean isReportedToPolice() {
+        return reportedToPolice;
+    }
+
+    public void setReportedToPolice(boolean reportedToPolice) {
+        this.reportedToPolice = reportedToPolice;
     }
 
     

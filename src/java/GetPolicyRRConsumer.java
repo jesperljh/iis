@@ -35,13 +35,13 @@ import org.w3c.dom.Element;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author jesperlim
  */
 public class GetPolicyRRConsumer
-            implements ExceptionListener{
+        implements ExceptionListener {
+
     String serverUrl = "10.124.131.128";
     String userName = null;
     String password = null;
@@ -231,12 +231,12 @@ public class GetPolicyRRConsumer
 
                 // Prepare reply message and send reply message
                 String contents = requestMessage.getText();
-                
+
                 incidentDAO iDAO = new incidentDAO();
                 int policyId = iDAO.retrieveByIncidentId(Integer.parseInt(contents));
                 policyDAO pDAO = new policyDAO();
                 policy p = pDAO.retrieveByPolicyId(policyId);
-                
+
                 Destination replyDestination = message.getJMSReplyTo();
                 MessageProducer replyProducer = session.createProducer(replyDestination);
 
@@ -245,18 +245,20 @@ public class GetPolicyRRConsumer
 
                 // ************************** Set the text to reply! **********************************************
                 //replyMessage.setText("Fuck u many many wei jie. Request received and queued successfully. Fuck u back wei jie");
-                
-                writeXmlFile(p);
-                Vector data = readXmlFile();
-                
-                StringBuffer finalMessage = new StringBuffer();
-                for (int i = 0; i < data.size(); i++) {
-                    finalMessage.append("");
-                    finalMessage.append((String)data.elementAt(i));
+                if (p == null) {
+                    String s = "<?xml version='1.0' encoding='UTF-8' standalone='no'?>";
+                    replyMessage.setText(s);
+                } else {
+                    writeXmlFile(p);
+                    Vector data = readXmlFile();
+
+                    StringBuffer finalMessage = new StringBuffer();
+                    for (int i = 0; i < data.size(); i++) {
+                        finalMessage.append("");
+                        finalMessage.append((String) data.elementAt(i));
+                    }
+                    replyMessage.setText(finalMessage.toString());
                 }
-                replyMessage.setText(finalMessage.toString());
-                
-                
                 //********************* End of setting text to reply! **********************************************
                 replyMessage.setJMSCorrelationID(requestMessage.getJMSMessageID());
                 // sending reply message.
@@ -269,6 +271,7 @@ public class GetPolicyRRConsumer
                 System.out.println("\tReply to:   " + replyMessage.getJMSReplyTo());
                 System.out.println("\tContents:   " + replyMessage.getText());
                 System.out.println("\tDestination:" + replyMessage.getJMSDestination());
+
             } else {
                 System.out.println("Invalid message detected");
                 System.out.println("\tType:       " + message.getClass().getName());
@@ -316,34 +319,31 @@ public class GetPolicyRRConsumer
             Element driverAge = doc.createElement("driverAge");
             driverAge.appendChild(doc.createTextNode("" + p.getDriverAge()));
             rootElement.appendChild(driverAge);
-            
+
             Element registrationPlate = doc.createElement("registrationPlate");
             registrationPlate.appendChild(doc.createTextNode("" + p.getCarPlateNumber()));
             rootElement.appendChild(registrationPlate);
-            
-            
+
             Element agentNumber = doc.createElement("agentNumber");
             agentNumber.appendChild(doc.createTextNode("" + p.getAgentContactNumber()));
             rootElement.appendChild(agentNumber);
-            
-            
+
             Element clientNumber = doc.createElement("clientNumber");
             clientNumber.appendChild(doc.createTextNode("" + p.getClientContactNumber()));
             rootElement.appendChild(clientNumber);
-            
-            
+
             Element policyDate = doc.createElement("policyDate");
-            policyDate.appendChild(doc.createTextNode("" +  p.getPolicyDate()));
+            policyDate.appendChild(doc.createTextNode("" + p.getPolicyDate()));
             rootElement.appendChild(policyDate);
-            
+
             Element policyExpiry = doc.createElement("policyExpiry");
             policyExpiry.appendChild(doc.createTextNode("" + p.getExpireDate()));
             rootElement.appendChild(policyExpiry);
-            
+
             Element medicalQuota = doc.createElement("medicalQuota");
             medicalQuota.appendChild(doc.createTextNode("" + p.getMedicalQuota()));
             rootElement.appendChild(medicalQuota);
-            
+
             Element repairQuota = doc.createElement("repairQuota");
             repairQuota.appendChild(doc.createTextNode("" + p.getRepairQuota()));
             rootElement.appendChild(repairQuota);
@@ -354,7 +354,7 @@ public class GetPolicyRRConsumer
             DOMSource source = new DOMSource(doc);
             StreamResult result = new StreamResult(new File("web/xml/policyInfo.xml"));
 
-		// Output to console for testing
+            // Output to console for testing
             // StreamResult result = new StreamResult(System.out);
             transformer.transform(source, result);
 
@@ -368,20 +368,20 @@ public class GetPolicyRRConsumer
 
         // end of writing XML File
     }
-    
-    public Vector readXmlFile(){
+
+    public Vector readXmlFile() {
         Vector data = new Vector();
         BufferedReader bufferedReader = null;
         try {
             //Construct the BufferedReader object
             bufferedReader = new BufferedReader(new FileReader("web/xml/policyInfo.xml"));
             String line = null;
-            
+
             while ((line = bufferedReader.readLine()) != null) {
                 //Add the line from XML file to the message to be sent as JMS msg
                 data.addElement(line);
             }
-          //prepareAndSendMessage(data);
+            //prepareAndSendMessage(data);
         } catch (FileNotFoundException ex) {
             ex.printStackTrace();
         } catch (IOException ex) {
@@ -389,8 +389,9 @@ public class GetPolicyRRConsumer
         } finally {
             //Close the BufferedReader
             try {
-                if (bufferedReader != null)
+                if (bufferedReader != null) {
                     bufferedReader.close();
+                }
             } catch (IOException ex) {
                 ex.printStackTrace();
             }

@@ -39,7 +39,7 @@ public class claimDAO {
         //policyDAO dao = new policyDAO();
         //policy p = dao.retrieveByCarPlate(incident.getRegistrationNumber());
         boolean successful = false;
-        String stmt = "insert into claim ('incident_id', 'claim_type', 'claimant', 'description', 'amount') values (?, ?, ?, ?, ?)";
+        String stmt = "insert into claim (incident_id, claim_type, claimant, description, amount) values (?, ?, ?, ?, ?)";
         try {
             //Get connection from DatabaseConnectionManager
             conn = DatabaseConnectionManager.getConnection();
@@ -87,7 +87,7 @@ public class claimDAO {
     
     public ArrayList<claim> retrieveAll(int incident_id){
         //Prepare SQL statement
-        String stmt = "SELECT * FROM claim where incident_id = " + incident_id + " order by incident.sas_date desc;";
+        String stmt = "SELECT * FROM claim where incident_id = ? order by claim_id desc;";
         ArrayList<claim> claimList = new ArrayList<claim>();
         claim c = null;
         try {
@@ -96,7 +96,9 @@ public class claimDAO {
 
             //Prepare SQL statement
             pstmt = conn.prepareStatement(stmt);
-
+            
+            pstmt.setInt(1, incident_id);
+            
             //Execute query (retrieve)
             rs = pstmt.executeQuery();
 
