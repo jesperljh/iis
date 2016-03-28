@@ -53,9 +53,12 @@
                     %>
                 </div>
                 <div class="content">
-                    <p><i class="marker icon"></i><strong><%=incident.getFormattedAddress()%></strong> <a href="pdf.jsp/rp="<%=incident.getRegistrationNumber()%> >See Report</a></p>
-                    <img src="fakemap.jpg" style="width: 100%; height: 150px;">
-
+                    <p><i class="marker icon"></i><strong><%=incident.getFormattedAddress()%></strong> <a href="pdf.jsp?id=<%=incident.getIncidentId()%>">See Report</a></p>
+                    <% if (i % 2 == 0){ %>
+                    <img src="images/map1.jpg" style="width: 100%; height: 150px;">
+                    <% } else{ %>
+                    <img src="images/map2.jpg" style="width: 100%; height: 150px;">
+                    <% } %>
                     <%
                         claimDAO claimDAO = new claimDAO();
                         ArrayList<claim> claimList = claimDAO.retrieveAll(incident.getIncidentId());

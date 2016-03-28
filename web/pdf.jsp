@@ -7,10 +7,13 @@
 <%@page import="DAO.incidentDAO"%>
 <%@page import="entity.incident"%>
 
-
-<%!
+<%
+    int id = Integer.parseInt(request.getParameter("id"));
+    %>
+<%
     incidentDAO incidentDAO = new incidentDAO();
-    String link = generatelink(incidentDAO.retrieve());
+    incident incident = incidentDAO.retrieve(id);
+    String link = generatelink(incident);
 %>
 
 
@@ -64,8 +67,6 @@
         
         return html;
     }
-
-
 %> 
 
 <html>
@@ -76,7 +77,7 @@
     <body>
 
 
-        <a href="<%=link%>" > SAS Report </a>
+        <a href="<%=link%>" style="font-size: 35px">Download SAS Report PDF</a>
         <h1>SINGAPORE ACCIDENT STATEMENT</h1>
 
         <table border='1'>
@@ -106,12 +107,12 @@
 
             <tr>
                 <td> Date of Accident </td>
-                <td><%=incidentDAO.retrieve().getDate()%></td>
+                <td><%=incident.getDate()%></td>
             </tr>
 
             <tr>
                 <td> Exact Location of Accident </td>
-                <td><%=incidentDAO.retrieve().getLocation()%></td>
+                <td><%=incident.getLocation()%></td>
             </tr>
 
             <tr>
@@ -120,7 +121,7 @@
 
             <tr>
                 <td> Vehicle Registration Number   </td>
-                <td><%=incidentDAO.retrieve().getRegistrationNumber()%></td>
+                <td><%=incident.getRegistrationNumber()%></td>
             </tr>
 
             <tr>
@@ -129,12 +130,12 @@
 
             <tr>
                 <td> Name of Driver   </td>
-                <td><%=incidentDAO.retrieve().getOwner()%></td>
+                <td><%=incident.getOwner()%></td>
             </tr>
 
             <tr>
                 <td> Contact Number   </td>
-                <td><%=incidentDAO.retrieve().getContactNumber()%></td>
+                <td><%=incident.getContactNumber()%></td>
             </tr>
 
             <tr>
@@ -144,12 +145,12 @@
 
             <tr>
                 <td> Type of Collision   </td>
-                <td><%=incidentDAO.retrieve().getCrashType()%></td>
+                <td><%=incident.getCrashType()%></td>
             </tr>
 
             <tr>
                 <td> Weather Conditions   </td>
-                <td><%=incidentDAO.retrieve().getWeather()%></td>
+                <td><%=incident.getWeather()%></td>
             </tr>
 
             <tr>
@@ -159,7 +160,7 @@
 
             <tr>
                 <td> Was the Accident reported to the Police?   </td>
-                <td><%=incidentDAO.retrieve().getIsReported()%></td>
+                <td><%=incident.getIsReported()%></td>
             </tr>
 
             <tr>
@@ -169,10 +170,10 @@
             <tr>
                 <td> Vehicle Registration Number   </td>
                 <td>
-                    <% if(incidentDAO.retrieve().getOtherRegistrationNumber()== null){
+                    <% if(incident.getOtherRegistrationNumber()== null){
                  
                 }  else {
-                       out.println(incidentDAO.retrieve().getOtherRegistrationNumber());
+                       out.println(incident.getOtherRegistrationNumber());
                       
                     } 
                 %>
@@ -183,10 +184,10 @@
             <tr>
                 <td> Name of Driver   </td>
                 <td>  
-                    <% if(incidentDAO.retrieve().getOtherDriver()== null){
+                    <% if(incident.getOtherDriver()== null){
                  
                 }  else {
-                       out.println(incidentDAO.retrieve().getOtherDriver());
+                       out.println(incident.getOtherDriver());
                     } 
                 %>
                 </td>
@@ -195,10 +196,10 @@
             <tr>
                 <td> Insurance Company Name  </td>
                 <td>  
-                    <% if(incidentDAO.retrieve().getOtherCompany()== null){
+                    <% if(incident.getOtherCompany()== null){
                  
                 }  else {
-                       out.println(incidentDAO.retrieve().getOtherCompany());
+                       out.println(incident.getOtherCompany());
                     } 
                 %>
                 </td>

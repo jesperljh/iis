@@ -95,7 +95,7 @@ public class incidentDAO {
     }
     public ArrayList<incident> retrieveAll(String registration_plate){
         //Prepare SQL statement
-        String stmt = "SELECT * FROM incident inner join policy on incident.policy_id = policy.policy_id where incident.sas_registration_plate = ? order by incident.sas_date desc;";
+        String stmt = "SELECT * FROM incident inner join policy on incident.policy_id = policy.policy_id where incident.sas_registration_plate = ? order by incident.sas_date desc, incident.incident_id desc;";
         ArrayList<incident> incidentList = new ArrayList<incident>();
         incident incident = null;
         try {
