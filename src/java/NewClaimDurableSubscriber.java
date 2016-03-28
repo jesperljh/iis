@@ -75,7 +75,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class AddClaimTopicIncidentDurableSubscriber
+public class NewClaimDurableSubscriber
 {
     String      serverUrl       = "10.124.131.128";
     String      userName        = null;
@@ -87,7 +87,7 @@ public class AddClaimTopicIncidentDurableSubscriber
 
     boolean     unsubscribe     = false;
 
-    public AddClaimTopicIncidentDurableSubscriber(String[] args) throws IOException {
+    public NewClaimDurableSubscriber(String[] args) throws IOException {
 
         parseArgs(args);
 
@@ -280,7 +280,7 @@ public class AddClaimTopicIncidentDurableSubscriber
 
     public static void main(String args[]) throws IOException
     {
-        AddClaimTopicIncidentDurableSubscriber t = new AddClaimTopicIncidentDurableSubscriber(args);
+        NewClaimDurableSubscriber t = new NewClaimDurableSubscriber(args);
     }
 
     void usage()

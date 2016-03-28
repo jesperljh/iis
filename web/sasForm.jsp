@@ -133,7 +133,7 @@
 <body>
 
     <!-- Following Menu -->
-    <div class="ui large top fixed hidden menu">
+ <!--   <div class="ui large top fixed hidden menu">
         <div class="ui container">
             <a class="active item">Home</a>
             <a class="item">Work</a>
@@ -148,7 +148,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <!-- Sidebar Menu -->
     <div class="ui vertical inverted sidebar menu">
@@ -202,7 +202,8 @@
         <!-- ******************* FORM ****************************** -->
         <%
             incidentDAO dao = new incidentDAO();
-            int id = Integer.parseInt(request.getParameter("id"));
+            //int id = Integer.parseInt(request.getParameter("id"));
+            int id = 1;
             incident incident = dao.retrieve(id);
         %>
         <div class="ui divider"></div>
