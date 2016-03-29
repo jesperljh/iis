@@ -8,8 +8,8 @@
 <%@page import="entity.incident"%>
 
 <%
-    //int id = Integer.parseInt(request.getParameter("id"));
-    int id = 1;
+    int id = Integer.parseInt(request.getParameter("id"));
+    //int id = 1;
     %>
 <%
     incidentDAO incidentDAO = new incidentDAO();
@@ -49,7 +49,11 @@
         html = html + incident.getWeather();
 
         html = html + "</td>  </tr> <tr> <td colspan='2' style='background-color:lightgrey;'> <b>Details of Police Action </b> </td> </tr> <tr>  <td> Was the Accident reported to the Police?   </td> <td>";
-        html = html + incident.getIsReported();
+        String reported="Yes";
+        if (incident.getIsReported()== false){
+            reported = "No";
+        }
+        html = html + reported;
 
         html = html + "</td> </tr>  <tr> <th colspan='2' style='background-color:black; color: white'> <b>DETAILS OF OTHER VEHICLE(S)/ PROPERTIES </b> </th>";
 
