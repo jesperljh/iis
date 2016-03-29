@@ -203,7 +203,7 @@
         <%
             incidentDAO dao = new incidentDAO();
             //int id = Integer.parseInt(request.getParameter("id"));
-            int id = 1;
+            int id = Integer.parseInt(request.getParameter("id"));
             incident incident = dao.retrieve(id);
         %>
         <div class="ui divider"></div>

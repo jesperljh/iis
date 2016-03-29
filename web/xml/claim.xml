@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <claim>
     <accidentId>1</accidentId>
-    <claimType>Repair</claimType>
-    <claimant>Jesper AutoRepair Pte Ltd</claimant>
-    <description>Bumper Replacement</description>
+    <claimType>Medical</claimType>
+    <claimant>Singapore General Hospital</claimant>
+    <description>Day Treatment</description>
     <amount>8000</amount>
 </claim>
