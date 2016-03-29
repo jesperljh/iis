@@ -260,7 +260,7 @@
                     </div>
                     <div class="field">
                         <label>Weather Conditions</label>
-                        <input placeholder="Weather Conditions" name="weather" type="text" value="<%=incident.getWeather()%>">
+                        <input placeholder="Weather Conditions" name="weather" type="text">
                     </div>
                 </div>    
                 <h4>DETAILS OF OTHER VEHICLE(S)/ PROPERTIES</h4>

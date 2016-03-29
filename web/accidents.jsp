@@ -43,7 +43,7 @@
                 %>
                 <div class="title">
                     <i class="dropdown icon"></i>
-                    Detected on <%=incident.getDate()%>
+                    Detected on <%=incident.getDate()%> (ID:<%=incident.getIncidentId()%>)
                     <%
                         if (incident.getIsReported()) {
                     %>

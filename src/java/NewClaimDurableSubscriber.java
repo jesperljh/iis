@@ -220,7 +220,7 @@ public class NewClaimDurableSubscriber
             // StreamResult result = new StreamResult(System.out);
             transformer.transform(source, result);
 
-            System.out.println("File saved!");
+            //System.out.println("File saved!");
 
         } catch (ParserConfigurationException pce) {
             pce.printStackTrace();
@@ -241,17 +241,17 @@ public class NewClaimDurableSubscriber
 
             doc.getDocumentElement().normalize();
 
-            System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
+            //System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
 
             NodeList nList = doc.getElementsByTagName("claim");
 
-            System.out.println("----------------------------");
+            //System.out.println("----------------------------");
 
             for (int temp = 0; temp < nList.getLength(); temp++) {
 
                 Node nNode = nList.item(temp);
 
-                System.out.println("\nCurrent Element :" + nNode.getNodeName());
+                //System.out.println("\nCurrent Element :" + nNode.getNodeName());
 
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 

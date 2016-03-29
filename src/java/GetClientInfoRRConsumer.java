@@ -361,7 +361,7 @@ public class GetClientInfoRRConsumer
             // StreamResult result = new StreamResult(System.out);
             transformer.transform(source, result);
 
-            System.out.println("File saved!");
+            //System.out.println("File saved!");
 
         } catch (ParserConfigurationException pce) {
             pce.printStackTrace();
