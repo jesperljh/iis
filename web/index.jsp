@@ -10,6 +10,10 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
+
+    <jsp:forward page="accidents.jsp"> 
+        <jsp:param name="rp" value="SBC1314Z" /> 
+    </jsp:forward>
     <!-- Standard Meta -->
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -263,7 +267,7 @@
                                             <%=incident.getFormattedAddress()%>
                                         </div>
                                     </div>
-                                        <a href="http://localhost:8084/iis/pdf.jsp">View my SAS report</a>
+                                    <a href="http://localhost:8084/iis/pdf.jsp">View my SAS report</a>
                                 </div>
                                 </p>
                             </div>
