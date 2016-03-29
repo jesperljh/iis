@@ -81,7 +81,10 @@
                                     <i class="university icon"></i> <%=c.getClaimant()%>
                                 </td>
                                 <td><%=c.getClaimType()%> <strong style="float: right">$<%=c.getAmount()%></strong></td>
+                                <td><%=c.getDescription()%></td>
                             </tr>
+                                
+                            
                             <%
                                 }
                             %>
@@ -97,7 +100,6 @@
                         <button class="ui blue compact labeled icon button">
                             <i class="lightning icon"></i>
                             Report Accident
-
                         </button>
                     </a>
                     <button class="ui orange compact button">

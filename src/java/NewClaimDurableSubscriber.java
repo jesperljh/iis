@@ -81,7 +81,7 @@ public class NewClaimDurableSubscriber
     String      userName        = null;
     String      password        = null;
 
-    String      topicName       = "t.claim";
+    String      topicName       = "t.newClaim";
     String      clientID        = null;
     String      durableName     = "subscriberClaim";
 
