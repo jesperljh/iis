@@ -77,16 +77,10 @@ public class UpdateServlet extends HttpServlet {
         String userName = "";
         String password = "";
 
-        String queueName = "q.sendSasReport";
+        String queueName = "q.sendSas";
 
-        String message = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
-                + "<accidentReport>\n"
-                + "    <registrationPlate>SBC1314Z</registrationPlate>\n"
-                + "        <lat>1.276922</lat>\n"
-                + "        <lng>103.853197</lng>\n"
-                + "    <crashType>Frontal Collision</crashType>\n"
-                + "    <formattedAddress>\"122 Geylang East Avenue 1\"</formattedAddress>\n"
-                + "</accidentReport>";
+        String message = "" + incidentId;
+        
         try {
 
             Vector<Object> data = new Vector<Object>();
