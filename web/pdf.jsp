@@ -34,7 +34,7 @@
         html = html + incident.getRegistrationNumber();
 
         html= html+  "</td> </tr><tr> <td colspan='2' style='background-color:lightgrey;'> <b>Insurance Company </b>  </td> </tr><tr> <td> Name of Insurance Company  </td> <td>";
-        html= html+  "ProLife";
+        html= html+  "ProLife Insurance ( Incident ID : "+ incident.getIncidentId() +" )" ;
         
         html= html+ "</td> </tr><tr><td colspan='2' style='background-color:lightgrey;'> <b> Driver </b>   </td> </tr>  <tr> <td> Name of Driver   </td> <td>";
         html= html+ incident.getOwner();
