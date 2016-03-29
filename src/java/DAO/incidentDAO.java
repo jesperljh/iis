@@ -23,6 +23,7 @@ import utility.DatabaseConnectionManager;
  * @author jesperlim
  */
 public class incidentDAO {
+
     /**
      * Connection object is required to access the database.
      */
@@ -36,8 +37,8 @@ public class incidentDAO {
      * ResultSet is a table of data representing a database result set.
      */
     private ResultSet rs;
-    
-    public incident retrieve(int id){ // ******* should we sort by incident_id as descending also? to get the last inciednt object ***********
+
+    public incident retrieve(int id) { // ******* should we sort by incident_id as descending also? to get the last inciednt object ***********
         //Prepare SQL statement
         String stmt = "select * from incident where incident_id = ?;";
         incident incident = null;
@@ -60,7 +61,7 @@ public class incidentDAO {
                 //System.out.println(rs.getString(2));
                 //Set record results into variable
                 int incidentId = rs.getInt("incident_id");
-                String date = rs.getString("sas_date"); 
+                String date = rs.getString("sas_date");
                 String location = rs.getString("sas_formatted_address");
                 String registrationNumber = rs.getString("sas_registration_plate");
                 String owner = rs.getString("sas_owner");
@@ -93,7 +94,8 @@ public class incidentDAO {
         }
         return incident;
     }
-    public ArrayList<incident> retrieveAll(String registration_plate){
+
+    public ArrayList<incident> retrieveAll(String registration_plate) {
         //Prepare SQL statement
         String stmt = "SELECT * FROM incident inner join policy on incident.policy_id = policy.policy_id where incident.sas_registration_plate = ? order by incident.sas_date desc, incident.incident_id desc;";
         ArrayList<incident> incidentList = new ArrayList<incident>();
@@ -117,7 +119,7 @@ public class incidentDAO {
                 //System.out.println(rs.getString(2));
                 //Set record results into variable
                 int incidentId = rs.getInt("incident_id");
-                String date = rs.getString("sas_date"); 
+                String date = rs.getString("sas_date");
                 String location = rs.getString("sas_formatted_address");
                 String registrationNumber = rs.getString("sas_registration_plate");
                 String owner = rs.getString("sas_owner");
@@ -151,8 +153,8 @@ public class incidentDAO {
         }
         return incidentList;
     }
-    
-    public int retrieveByIncidentId(int incidentId){
+
+    public int retrieveByIncidentId(int incidentId) {
         //Prepare SQL statement
         String stmt = "SELECT * FROM incident inner join policy on incident.policy_id = policy.policy_id where incident.incident_id = ?;";
         ArrayList<incident> incidentList = new ArrayList<incident>();
@@ -173,7 +175,9 @@ public class incidentDAO {
 
             //If there is a result
             while (rs.next()) {
-                policyId = rs.getInt("policy.policy_id");
+                if (rs.getBoolean("incident.is_reported")) {
+                    policyId = rs.getInt("policy.policy_id");
+                }
             }
 
             //If result set is not null, close it
@@ -193,8 +197,8 @@ public class incidentDAO {
         }
         return policyId;
     }
-    
-    public void updateIncident(incident incident){
+
+    public void updateIncident(incident incident) {
         //Prepare SQL statement
         String stmt = "UPDATE incident SET sas_owner = ?, sas_formatted_address = ?, sas_type = ?, sas_weather = ?, sas_reported_to_police = ?, other_company = ?, is_reported = ?, other_driver = ?, other_registration_plate =? WHERE incident_id = ?";
         // ("UPDATE items SET name = ?, category = ?, price = ?, quantity = ? WHERE id = ?");
@@ -206,7 +210,6 @@ public class incidentDAO {
             pstmt = conn.prepareStatement(stmt);
 
             //Set parameters into prepared statement
-              
             pstmt.setString(1, incident.getOwner());
             pstmt.setString(2, incident.getFormattedAddress());
             pstmt.setString(3, incident.getCrashType());
@@ -218,10 +221,7 @@ public class incidentDAO {
             pstmt.setString(9, incident.getOtherRegistrationNumber());
             pstmt.setInt(10, incident.getIncidentId());
            // pstmt.setString(7, incident.getContactNumber());
-            
-            
-            
-            
+
             //Execute query (retrieve)
             int result = pstmt.executeUpdate();
 
@@ -246,7 +246,8 @@ public class incidentDAO {
             DatabaseConnectionManager.closeConnection(conn);
         }
     }
-    public void addIncident(incident incident) throws ParseException{
+
+    public void addIncident(incident incident) throws ParseException {
         //Prepare SQL statement
         policyDAO dao = new policyDAO();
         policy p = dao.retrieveByCarPlate(incident.getRegistrationNumber());
@@ -282,10 +283,10 @@ public class incidentDAO {
             System.out.println(dateFormat.getTime());
             java.sql.Date sqlDate = new java.sql.Date(dateFormat.getTime());
             System.out.println(sqlDate);
-            
+
             pstmt.setDate(9, sqlDate);
             pstmt.setBoolean(10, false);
-            
+
             //Execute query (retrieve)
             int result = pstmt.executeUpdate();
 
